@@ -140,8 +140,7 @@ GET http://localhost:8081/repositories/hottest?limit=101
     "status": 400,
     "error": "Bad Request"
 }
-``
-
+```
 
 ---
 
