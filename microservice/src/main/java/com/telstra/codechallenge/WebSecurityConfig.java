@@ -14,9 +14,7 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(requests -> requests
             .anyRequest()
             .permitAll());
-            .csrf(csrf -> csrf.disable())
-            .httpBasic(basic -> basic.disable())
-            .formLogin(form -> form.disable()); //this config is only for testing or local development; real production would need proper security.
+
     return http.build();
   }
 }
