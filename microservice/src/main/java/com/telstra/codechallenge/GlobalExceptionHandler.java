@@ -21,4 +21,14 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
+        Map<String, Object> error = Map.of(
+                 "status", 503,
+                  "error", "Service Unavailable",
+                  "message", ex.getMessage(),
+                  "timestamp", Instant.now().toString()
+         );
+         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(error);
+}
 }

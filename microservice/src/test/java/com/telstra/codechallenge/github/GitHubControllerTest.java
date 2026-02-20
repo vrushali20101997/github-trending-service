@@ -73,4 +73,14 @@ void getHottestRepositories_returns400WhenLimitExceeds100() throws Exception {
             .andExpect(jsonPath("$.error").value("Bad Request"))
             .andExpect(jsonPath("$.message").value("limit must be between 1 and 100"));
 }
+@Test
+void getHottestRepositories_returns503WhenGitHubIsDown() throws Exception {
+    given(gitHubService.getHottestRepositories(10))
+            .willThrow(new RuntimeException("Unable to reach GitHub API. Please try again later."));
+
+    mockMvc.perform(get("/repositories/hottest"))
+            .andExpect(status().isServiceUnavailable())
+            .andExpect(jsonPath("$.status").value(503))
+            .andExpect(jsonPath("$.message").value("Unable to reach GitHub API. Please try again later."));
+}
 }
