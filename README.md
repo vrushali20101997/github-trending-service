@@ -50,10 +50,11 @@ Returns the highest-starred GitHub repositories created in the last 7 days, sort
 ```
 GET http://localhost:8081/actuator/health
 ```
-
-
-![alt text](image-3.png)
-
+```json
+{
+    "status": "UP"
+}
+```
 
 ---
 
@@ -63,22 +64,31 @@ GET http://localhost:8081/actuator/health
 GET http://localhost:8081/repositories/hottest
 ```
 
-
-![alt text](image-4.png)
-
-
 ---
 
 ### Fetch with custom limit
 
 ```
-GET http://localhost:8081/repositories/hottest?limit=5
+GET http://localhost:8081/repositories/hottest?limit=2
 ```
-
-
-![alt text](image-5.png)
-
-
+```json
+[
+    {
+        "language": "Python",
+        "description": "\"ClawWork: OpenClaw as Your AI Coworker - 💰 $10K earned in 7 Hours\"",
+        "name": "ClawWork",
+        "html_url": "https://github.com/HKUDS/ClawWork",
+        "watchers_count": 4389
+    },
+    {
+        "language": "PowerShell",
+        "description": "VSCode theme based off the easemate IDE and Jetbrains islands theme",
+        "name": "vscode-dark-islands",
+        "html_url": "https://github.com/bwya77/vscode-dark-islands",
+        "watchers_count": 3697
+    }
+]
+```
 ---
 
 ### Fetch minimum limit (limit=1)
@@ -86,10 +96,17 @@ GET http://localhost:8081/repositories/hottest?limit=5
 ```
 GET http://localhost:8081/repositories/hottest?limit=1
 ```
-
-
-![alt text](image-6.png)
-
+```json
+[
+    {
+        "language": "Rust",
+        "description": "Fast, small, and fully autonomous AI assistant infrastructure — deploy anywhere, swap anything 🦀",
+        "name": "zeroclaw",
+        "html_url": "https://github.com/zeroclaw-labs/zeroclaw",
+        "watchers_count": 15440
+    }
+]
+```
 
 ---
 
@@ -99,9 +116,14 @@ GET http://localhost:8081/repositories/hottest?limit=1
 GET http://localhost:8081/repositories/hottest?limit=0
 ```
 
-
-![alt text](image-7.png)
-
+```json
+{
+    "message": "limit must be between 1 and 100",
+    "timestamp": "2026-02-20T14:38:57.537315900Z",
+    "status": 400,
+    "error": "Bad Request"
+}
+```
 
 ---
 
@@ -111,7 +133,14 @@ GET http://localhost:8081/repositories/hottest?limit=0
 GET http://localhost:8081/repositories/hottest?limit=101
 ```
 
-![alt text](image-8.png)
+```json
+{
+    "message": "limit must be between 1 and 100",
+    "timestamp": "2026-02-20T14:38:12.849853300Z",
+    "status": 400,
+    "error": "Bad Request"
+}
+``
 
 
 ---
@@ -134,9 +163,7 @@ This scenario is covered by unit tests (`GitHubControllerTest`) rather than a li
 
 The service follows a strict three-layer architecture, keeping concerns cleanly separated and each layer independently testable.
 
-
-![alt text](image-2.png)
-
+![alt text](image-9.png)
 
 ---
 
@@ -193,8 +220,9 @@ Each layer has a single, clear responsibility:
 mvn test
 ```
 
-![alt text](image-1.png)
-
+```
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+```
 
 | Test Class | What it covers |
 |---|---|
@@ -223,14 +251,6 @@ curl.exe -i "http://localhost:8081/repositories/hottest?limit=0"
 # Invalid limit — expect 400
 curl.exe -i "http://localhost:8081/repositories/hottest?limit=101"
 ```
-
----
-
-## Project Structure
-
-
-![alt text](image.png)
-
 
 ---
 
